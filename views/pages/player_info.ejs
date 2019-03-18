@@ -1,0 +1,141 @@
+<% include ../partials/header %>
+<% include ../partials/menu %>
+	<div class="container">
+		<br>
+		<div class="row">
+			<div class="col-4">
+				<div class="card">
+				<!-- TODO: Modify the ejs code below, to conditionally set the image_src to be from our chosen player -->
+				 <%
+				 var image_src = '../resources/img/helmet.jpg';
+				 if (player_info) {
+					 var image_src = player_info.img_src;
+					 %>
+				 <%}%>
+
+				 <img class="card-img-top" id="player_img" src= "<%- image_src %>" alt="Image of Football Player">
+				  <div class="card-body mx-auto">
+					<form class="form"action="/player_info/post" method="get">
+						<select class="custom-select" name="player_choice" onchange="this.form.submit()">
+							 <option selected>Select Player</option>
+
+							 <%
+							 if (players_list) {
+								 var playerDisplay = '';
+								 players_list.forEach(function(item){
+									 playerDisplay += '<option value="' + item.id + '">' + item.name + '</option>';
+								 }); %>
+								 <%-playerDisplay%>
+							 <%}%>
+						</select>
+					</form>
+				  </div>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="table-responsive">
+					<table class="table">
+						<tr>
+							<!-- TODO: Set Player Information
+							 			If a player has been selected, fill in their information in each of the fields below.
+							 		    You'll need to calculate here the player's average rushing, receiving, and passing yards.-->
+
+							<th>Year</th>
+							<td><span id= "year">
+								<%
+							 if (player_info) {
+								 %>
+								 <%-player_info.year%>
+							 <%}%>
+							</span></td>
+						</tr>
+						<tr>
+							<th>Major</th>
+							<td><span id= "major">
+								<%
+							 if (player_info) {
+								 var major = player_info.major;
+								 %>
+								 <%-major%>
+							 <%}%>
+							</span>	</td>
+						</tr>
+						<tr>
+							<th>Games Played</th>
+							<td><span id= "gamesPlayed">
+								<%-games_played%>
+							</span>	</td>
+						</tr>
+						<tr>
+							<td>Passing Yards:<span id= "passingYards">
+								<%
+							 if (player_info) {
+								 var passingYards = player_info.passing_yards;
+								 %>
+								 <%-passingYards%>
+							 <%}%>
+							</span> </td>
+							<td>Avg. Passing Yards:<span id= "avgPassingyards">
+								<%
+								if (player_info && games_played) {
+									if(games_played!=0){
+								  	var averagePassing = parseInt(player_info.passing_yards)/games_played;
+								   	averagePassing = averagePassing.toFixed(2);
+								  }
+									else{var averagePassing='N/A';}
+								%>
+								<%-averagePassing%>
+								<%}%>
+							</span> </td>
+						</tr>
+						<tr>
+							<td>Rushing Yards:<span id= "rushingYards">
+								<%
+							 if (player_info) {
+								 var rushingYards = player_info.rushing_yards;
+								 %>
+								 <%-rushingYards%>
+							 <%}%>
+							</span></td>
+							<td>Avg. Rushing Yards:<span id= "avgRushingYards">
+								<%
+								if (player_info && games_played) {
+									if(games_played!=0){
+									var averageRushing = parseInt(player_info.rushing_yards)/games_played;
+									averageRushing = averageRushing.toFixed(2);
+								}
+								else{var averageRushing='N/A';}
+								%>
+								<%-averageRushing%>
+								<%}%>
+							</span> </td>
+						</tr>
+						<tr>
+							<td>Receiving Yards:<span id= "receivingYards">
+								<%
+							 if (player_info) {
+								 var receivingYards = player_info.receiving_yards;
+								 %>
+								 <%-receivingYards%>
+							 <%}%>
+							</span> </td>
+							<td>Avg. Receiving Yards:<span id= "avgReceivingYards">
+								<%
+								if (player_info && games_played) {
+									if(games_played!=0){
+									var averageReceiving = parseInt(player_info.receiving_yards)/games_played;
+									averageReceiving = averageReceiving.toFixed(2);
+								}
+								else{var averageReceiving='N/A';}
+								%>
+								<%-averageReceiving%>
+								<%}%>
+							</span> </td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<% include ../partials/footer %>
